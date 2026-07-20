@@ -1,0 +1,287 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.viz-root {
+  color-scheme: light;
+  --page-plane:     #f9f9f7;
+  --surface-1:      #fcfcfb;
+  --text-primary:   #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted:     #898781;
+  --gridline:       #e1e0d9;
+  --axis:           #c3c2b7;
+  --border:         rgba(11,11,11,0.10);
+
+  --series-1: #2a78d6; /* Tokyo */
+  --series-2: #008300; /* Osaka */
+  --series-3: #e87ba4; /* Sapporo */
+  --series-4: #eda100; /* Nagoya */
+  --series-5: #1baf7a; /* Fukuoka */
+  --series-6: #eb6834; /* Naha */
+
+  background: var(--page-plane);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 24px 16px 48px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .viz-root {
+    color-scheme: dark;
+    --page-plane:     #0d0d0d;
+    --surface-1:      #1a1a19;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --axis:           #383835;
+    --border:         rgba(255,255,255,0.10);
+
+    --series-1: #3987e5;
+    --series-2: #008300;
+    --series-3: #d55181;
+    --series-4: #c98500;
+    --series-5: #199e70;
+    --series-6: #d95926;
+  }
+}
+:root[data-theme="dark"] .viz-root {
+  color-scheme: dark;
+  --page-plane:     #0d0d0d;
+  --surface-1:      #1a1a19;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --gridline:       #2c2c2a;
+  --axis:           #383835;
+  --border:         rgba(255,255,255,0.10);
+
+  --series-1: #3987e5;
+  --series-2: #008300;
+  --series-3: #d55181;
+  --series-4: #c98500;
+  --series-5: #199e70;
+  --series-6: #d95926;
+}
+
+.app-header {
+  max-width: 1080px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.app-header h1 {
+  font-size: 22px;
+  margin: 0 0 4px;
+}
+.subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+.theme-toggle {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+.theme-toggle:hover { background: var(--gridline); }
+
+.filters {
+  max-width: 1080px;
+  margin: 0 auto 20px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.filter-group { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.filter-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  min-width: 40px;
+  font-weight: 600;
+}
+.preset-row, .city-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.preset-btn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.preset-btn:hover { background: var(--gridline); }
+.preset-btn.is-selected {
+  background: var(--text-primary);
+  color: var(--surface-1);
+  border-color: var(--text-primary);
+  font-weight: 600;
+}
+
+.city-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 12px 6px 8px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+.city-chip input { accent-color: currentColor; cursor: pointer; }
+.city-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.stat-row {
+  max-width: 1080px;
+  margin: 0 auto 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+.stat-tile {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.stat-tile .stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.stat-tile .stat-value {
+  font-size: 24px;
+  font-weight: 600;
+}
+.stat-tile .stat-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.chart-card {
+  max-width: 1080px;
+  margin: 0 auto 20px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px 12px;
+}
+.chart-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.chart-card-head h2 {
+  font-size: 15px;
+  margin: 0;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
+}
+.chart-wrap {
+  position: relative;
+  height: 320px;
+}
+
+.table-section {
+  max-width: 1080px;
+  margin: 0 auto 20px;
+}
+.table-toggle-btn {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.table-toggle-btn:hover { background: var(--gridline); }
+.table-wrap {
+  margin-top: 12px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-1);
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+th, td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--gridline);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+th:first-child, td:first-child { text-align: left; }
+th {
+  color: var(--text-secondary);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background: var(--surface-1);
+}
+
+.status-line {
+  max-width: 1080px;
+  margin: 0 auto 20px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.app-footer {
+  max-width: 1080px;
+  margin: 32px auto 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+}
+.app-footer a { color: var(--text-secondary); }
