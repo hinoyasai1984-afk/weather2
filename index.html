@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>日本主要都市 気象データダッシュボード</title>
-<link rel="stylesheet" href="style.css?v=2" />
+<link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
 <div class="viz-root">
@@ -16,7 +16,10 @@
       <h1>日本主要都市 気象データダッシュボード</h1>
       <p class="subtitle">過去の気温・降水量の推移を都市別に比較</p>
     </div>
-    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="配色を切り替え">🌓</button>
+    <div class="header-actions">
+      <button id="share-link" class="share-link-btn" type="button" title="このページのリンクをコピー" aria-label="このページのリンクをコピー">🔗</button>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="配色を切り替え">🌓</button>
+    </div>
   </header>
 
   <section class="filters" aria-label="表示条件">
@@ -74,6 +77,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

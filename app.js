@@ -27,6 +27,7 @@ const els = {
   tableWrap: document.getElementById("table-wrap"),
   status: document.getElementById("status-line"),
   themeToggle: document.getElementById("theme-toggle"),
+  shareLink: document.getElementById("share-link"),
 };
 
 function seriesColor(slot) {
@@ -261,6 +262,32 @@ els.themeToggle.addEventListener("click", () => {
   buildCityChips();
   refresh();
 });
+
+els.shareLink.addEventListener("click", () => {
+  const btn = els.shareLink;
+  const url = window.location.href;
+  const onDone = () => {
+    const original = btn.textContent;
+    btn.textContent = "✓";
+    setTimeout(() => { btn.textContent = original; }, 1600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(onDone).catch(() => fallbackCopyLink(url, onDone));
+  } else {
+    fallbackCopyLink(url, onDone);
+  }
+});
+function fallbackCopyLink(text, onDone) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); } catch (e) { /* clipboard unavailable */ }
+  document.body.removeChild(ta);
+  onDone();
+}
 
 buildCityChips();
 buildPresetButtons();

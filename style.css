@@ -96,7 +96,8 @@ html, body {
   color: var(--text-secondary);
   font-size: 14px;
 }
-.theme-toggle {
+.header-actions { display: flex; gap: 8px; flex: none; }
+.theme-toggle, .share-link-btn {
   background: var(--surface-1);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -106,7 +107,7 @@ html, body {
   cursor: pointer;
   color: var(--text-primary);
 }
-.theme-toggle:hover { background: var(--gridline); }
+.theme-toggle:hover, .share-link-btn:hover { background: var(--gridline); }
 
 .filters {
   max-width: 1080px;
